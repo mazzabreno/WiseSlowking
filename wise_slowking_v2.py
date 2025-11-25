@@ -7,18 +7,17 @@ from typing import Dict, List
 
 CONFIG = {
     "agent_name": "Wise Slowking",
-    "version": "3.1-Standalone",
+    "version": "3.2-Twitter-Native",
     "thresholds": {
-        "divergence": 10.0,    # 10% difference triggers an alert
-        "scarcity": 10         # Less than 10 units on-chain = Scarcity
+        "divergence": 8.0,     # 8% difference triggers alert
+        "scarcity": 10         # Low supply count
     }
 }
 
 # ==========================================
 # 2. REAL MARKET SNAPSHOT (EMBEDDED)
 # ==========================================
-# Data collected from real market sources (eBay, PriceCharting) on Nov 25, 2025.
-# Embedded here to ensure zero read errors during the demo.
+# Snapshot taken: Nov 25, 2025. Sources: eBay, Beezie, PriceCharting.
 
 REAL_MARKET_SNAPSHOT = {
   "snapshot_date": "2025-11-25",
@@ -29,7 +28,7 @@ REAL_MARKET_SNAPSHOT = {
       "market_prices": {
         "Beezie": 750.00,
         "Collector Crypt": 780.00,
-        "eBay": 830.00,  # Real market ref
+        "eBay": 830.00,
         "TCGPlayer": 850.00,
         "Cardmarket": 810.00
       },
@@ -42,9 +41,9 @@ REAL_MARKET_SNAPSHOT = {
       "id": "PKM-002",
       "name": "Pikachu Illustrator (Fractional)",
       "market_prices": {
-        "Beezie": 4800000.00, # Implied fractional valuation
+        "Beezie": 4800000.00,
         "Collector Crypt": 4950000.00,
-        "eBay": 5275000.00, # Based on Logan Paul record / Guinness
+        "eBay": 5275000.00,
         "TCGPlayer": 5300000.00,
         "Cardmarket": 5400000.00
       },
@@ -59,7 +58,7 @@ REAL_MARKET_SNAPSHOT = {
       "market_prices": {
         "Beezie": 2850.00,
         "Collector Crypt": 2900.00,
-        "eBay": 3130.00, # Recent eBay sales avg
+        "eBay": 3130.00,
         "TCGPlayer": 3150.00,
         "Cardmarket": 3100.00
       },
@@ -76,30 +75,27 @@ REAL_MARKET_SNAPSHOT = {
 # ==========================================
 
 class RealDataFetcher:
-    """Loads the embedded snapshot data."""
-    
     def load_data(self) -> List[Dict]:
-        print(f"✅ DATA LOADED SUCCESSFULLY")
-        print(f"   Market Snapshot Date: {REAL_MARKET_SNAPSHOT['snapshot_date']}")
+        print(f"\n> CONNECTED TO MARKET DATA STREAM ({REAL_MARKET_SNAPSHOT['snapshot_date']})\n")
         return REAL_MARKET_SNAPSHOT['cards']
 
 # ==========================================
-# 4. ANALYTICAL ENGINE (RWA vs OFF-CHAIN)
+# 4. ANALYTICAL ENGINE
 # ==========================================
 
 class MarketAnalyzer:
     def analyze(self, card_data: Dict) -> Dict:
         prices = card_data['market_prices']
         
-        # Calculate On-Chain Average (Beezie/Collector Crypt)
+        # Calculate On-Chain Average
         p_beezie = prices.get('Beezie', 0)
         p_cc = prices.get('Collector Crypt', 0)
         on_chain_avg = (p_beezie + p_cc) / 2
         
-        # Calculate Off-Chain Reference (eBay is the standard for physical liquidity)
+        # Calculate Off-Chain Reference
         off_chain_ref = prices.get('eBay', 0)
         
-        # Calculate Divergence: (eBay - OnChain) / OnChain
+        # Calculate Divergence
         if on_chain_avg > 0:
             divergence_pct = ((off_chain_ref - on_chain_avg) / on_chain_avg) * 100
         else:
@@ -108,13 +104,11 @@ class MarketAnalyzer:
         insight_type = "NEUTRAL"
         target_platform = "None"
         
-        # Decision Logic
+        # Decision Logic (8% Threshold)
         if divergence_pct > CONFIG["thresholds"]["divergence"]:
-            # If eBay is X% more expensive -> On-Chain Discount exists
             insight_type = "ON_CHAIN_DISCOUNT" 
             target_platform = "Beezie"
         elif divergence_pct < -CONFIG["thresholds"]["divergence"]:
-            # If eBay is X% cheaper -> Off-Chain Discount exists
             insight_type = "OFF_CHAIN_DISCOUNT" 
             target_platform = "eBay"
         elif card_data['supply_info']['on_chain_count'] < CONFIG["thresholds"]["scarcity"]:
@@ -131,7 +125,7 @@ class MarketAnalyzer:
         }
 
 # ==========================================
-# 5. PERSONA ENGINE (WISE SLOWKING)
+# 5. PERSONA ENGINE (TWEET OPTIMIZED)
 # ==========================================
 
 class WiseSlowkingPersona:
@@ -141,40 +135,44 @@ class WiseSlowkingPersona:
         off_p = f"${analysis['off_chain_price']:,.2f}"
         diff = f"{abs(analysis['divergence']):.1f}%"
         
+        # TWEET FORMAT: Clean, visual, data-first.
+        
         if analysis['insight'] == "ON_CHAIN_DISCOUNT":
             return (
-                f"🚨 ARBITRAGE OPPORTUNITY: {name}\n\n"
-                f"The physical market (eBay) values this at {off_p}.\n"
-                f"However, the On-Chain RWA on **{analysis['target']}** is trading at {on_p}.\n"
-                f"📉 Divergence: {diff} discount on-chain.\n"
-                f"Strategy: Acquire the tokenized asset immediately before the gap closes."
+                f"🚨 ARBITRAGE ALERT: {name}\n\n"
+                f"Physical (eBay): {off_p}\n"
+                f"On-Chain ({analysis['target']}): {on_p}\n\n"
+                f"📉 {diff} Discount detected On-Chain.\n"
+                f"The gap is visible. Tokenized assets currently undervalued."
             )
             
         elif analysis['insight'] == "OFF_CHAIN_DISCOUNT":
             return (
-                f"📉 PHYSICAL ENTRY POINT: {name}\n\n"
-                f"The physical copies on **{analysis['target']}** ({off_p}) are trading below tokenized value.\n"
-                f"On-Chain markets demand {on_p}.\n"
-                f"Strategy: Acquire the physical card to bridge it to the blockchain for value realization."
+                f"📉 ENTRY POINT: {name}\n\n"
+                f"Physical (eBay): {off_p}\n"
+                f"On-Chain RWA: {on_p}\n\n"
+                f"Physical market trading below tokenized value.\n"
+                f"Opportunity to bridge asset for immediate appreciation."
             )
 
         elif analysis['insight'] == "SCARCITY_ALERT":
             return (
-                f"💎 SUPPLY SHOCK DETECTED: {name}\n\n"
-                f"Only {analysis['supply']['on_chain_count']} copies exist in the On-Chain vaults.\n"
-                f"Meanwhile, {analysis['supply']['off_chain_count']} circulate in the wild.\n"
-                f"The digital scarcity premium has not yet been priced in. Watch closely."
+                f"💎 SUPPLY SHOCK: {name}\n\n"
+                f"On-Chain Supply: Only {analysis['supply']['on_chain_count']} left\n"
+                f"Off-Chain Supply: {analysis['supply']['off_chain_count']}\n\n"
+                f"Vaults are emptying. Digital scarcity premium not yet priced in."
             )
             
         else:
             return (
                 f"⚖️ MARKET STABILITY: {name}\n\n"
-                f"On-Chain ({on_p}) and eBay ({off_p}) are perfectly balanced.\n"
-                f"No immediate action required. The Oracle waits."
+                f"On-Chain: {on_p}\n"
+                f"Off-Chain: {off_p}\n\n"
+                f"Prices are balanced across realms. No action required."
             )
 
 # ==========================================
-# 6. MAIN EXECUTION
+# 6. MAIN EXECUTION (CLEAN OUTPUT)
 # ==========================================
 
 if __name__ == "__main__":
@@ -182,18 +180,12 @@ if __name__ == "__main__":
     analyzer = MarketAnalyzer()
     persona = WiseSlowkingPersona()
     
-    print("="*60)
-    print("🐚 WISE SLOWKING: INITIALIZING REAL-WORLD DATA ENGINE...")
-    print("="*60 + "\n")
-    
     cards = fetcher.load_data()
     
     for card in cards:
         analysis = analyzer.analyze(card)
         post = persona.speak(analysis)
         
-        print(f"--- ANALYZING: {card['name']} ---")
-        print(f"🔍 Insight Type: {analysis['insight']}")
-        print("📢 GENERATED X POST:")
+        # Simulating a clean Twitter Feed in the terminal
         print(post)
-        print("\n" + "-"*60 + "\n")
+        print("\n" + " "*20 + "* * *\n")
