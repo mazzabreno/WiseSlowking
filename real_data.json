@@ -1,0 +1,52 @@
+{
+  "cards": [
+    {
+      "id": "PKM-001",
+      "name": "Charizard Base Set (Unlimited)",
+      "market_prices": {
+        "Beezie": 350.00,
+        "Collector Crypt": 380.00,
+        "eBay": 290.00,
+        "TCGPlayer": 310.00,
+        "Cardmarket": 300.00
+      },
+      "supply_info": {
+        "on_chain_count": 12,
+        "off_chain_count": 450
+      },
+      "volume_trend_24h": -5.0
+    },
+    {
+      "id": "PKM-002",
+      "name": "Pikachu Illustrator (Fractional)",
+      "market_prices": {
+        "Beezie": 4500.00,
+        "Collector Crypt": 4600.00,
+        "eBay": 6000.00,
+        "TCGPlayer": 5800.00,
+        "Cardmarket": 5900.00
+      },
+      "supply_info": {
+        "on_chain_count": 5,
+        "off_chain_count": 2
+      },
+      "volume_trend_24h": 0.0
+    },
+    {
+      "id": "PKM-003",
+      "name": "Umbreon VMAX Alt Art",
+      "market_prices": {
+        "Beezie": 750.00,
+        "Collector Crypt": 740.00,
+        "eBay": 900.00,
+        "TCGPlayer": 890.00,
+        "Cardmarket": 880.00
+      },
+      "supply_info": {
+        "on_chain_count": 3,
+        "off_chain_count": 120
+      },
+      "volume_trend_24h": 12.0
+    }
+  ]
+}
