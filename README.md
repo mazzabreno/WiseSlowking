@@ -1,6 +1,4 @@
-<div align="center">
-
-<img src="banner.png" alt="Wise Slowking Oracle" width="100%" style="border-radius: 10px">
+<img src="WiseSlowking.jpg" alt="Wise Slowking Oracle" width="100%" style="border-radius: 10px">
 
 # 🐚 Wise Slowking: The Autonomous RWA Oracle
 
