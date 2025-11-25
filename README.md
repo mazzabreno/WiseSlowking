@@ -1,6 +1,5 @@
-<img src="WiseSlowking.jpg" alt="Wise Slowking Oracle" width="100%" style="border-radius: 10px">
-
 # 🐚 Wise Slowking: The Autonomous RWA Oracle
+<img src="WiseSlowking.jpg" alt="Wise Slowking Oracle" width="600" style="border-radius: 10px">
 
 > *"Disturb not the harmony of fire, ice, or lightning... lest these three Titans wreck destruction upon the world in which you clash."* — Slowking, Pokémon The Movie 2000.
 
