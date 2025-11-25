@@ -9,10 +9,10 @@ from typing import Dict, List
 
 CONFIG = {
     "agent_name": "Wise Slowking",
-    "version": "6.0-Oracle-Persona",
+    "version": "7.0-Shell-Oracle",
     "data_source": "real_data.json", 
     "thresholds": {
-        "divergence": 5.0,     # 5% difference triggers observation
+        "divergence": 5.0,     # 5% difference triggers message
         "scarcity": 5          # Critical supply count
     }
 }
@@ -22,12 +22,9 @@ CONFIG = {
 # ==========================================
 
 class MarketScanner:
-    """
-    Loads the full database from JSON and selects a random batch to simulate a live scan.
-    """
     def scan(self) -> List[Dict]:
-        print(f"\n> GAZING INTO THE MARKET STREAMS (real_data.json)...")
-        print(f"> OBSERVING THE FLOW OF VALUE...\n")
+        print(f"\n> LISTENING TO THE ECHOES OF THE MARKET (real_data.json)...")
+        print(f"> OBSERVING THE TIDES...\n")
         
         if not os.path.exists(CONFIG["data_source"]):
             print(f"❌ ERROR: File {CONFIG['data_source']} not found.")
@@ -74,7 +71,7 @@ class MarketAnalyzer:
         }
 
 # ==========================================
-# 4. PERSONA ENGINE (THE WISE ORACLE)
+# 4. PERSONA ENGINE (THE SHELL ORACLE)
 # ==========================================
 
 class WiseSlowkingPersona:
@@ -85,35 +82,39 @@ class WiseSlowkingPersona:
         p_ebay = f"${analysis['off_chain_p']:,.2f}"
         pct = abs(analysis['diff_pct'])
         
-        # O Slowking fala sobre "Mundos" (Físico vs Digital) e "Equilíbrio".
+        # EMOJI KEY:
+        # 🐚 = Conch (Call to Action / Opportunity)
+        # 💭 = Thought Balloon (Caution / Illusion / Warning)
+        # 🌊 = Wave (Calm / Stability)
+        # 🔮 = Crystal Ball (Future / Scarcity)
         
         if analysis['insight'] == "ON_CHAIN_DISCOUNT":
             return (
-                f"🚨 THE BALANCE IS DISTURBED: {name}\n\n"
+                f"🐚 THE BALANCE IS DISTURBED: {name}\n\n"
                 f"The Physical Realm demands {p_ebay}, yet the Digital Vaults of {rwa} ask only {p_rwa}.\n\n"
-                f"📉 A divergence of {pct:.1f}% reveals a hidden truth.\n"
+                f"🌀 A divergence of {pct:.1f}% reveals a hidden path.\n"
                 f"Counsel: Bridge the realms. Restore value where it lies dormant."
             )
         
         elif analysis['insight'] == "OFF_CHAIN_DISCOUNT":
             return (
-                f"⚠️ ILLUSION DETECTED: {name}\n\n"
+                f"💭 ILLUSION DETECTED: {name}\n\n"
                 f"The Digital price ({p_rwa}) has drifted far from the Physical truth ({p_ebay}).\n\n"
                 f"The waters here are treacherous ({pct:.1f}% premium).\n"
-                f"Counsel: Do not be swayed. Seek the artifact in the physical world."
+                f"Counsel: Do not be swayed by the reflection. Seek the artifact in the physical world."
             )
             
         elif analysis['insight'] == "SCARCITY_WARNING":
             return (
-                f"💎 A DROUGHT APPROACHES: {name}\n\n"
+                f"🔮 THE TIDE RECEDES: {name}\n\n"
                 f"The On-Chain Vaults hold but {analysis['supply']['on_chain']} remnants.\n"
                 f"The physical supply ({analysis['supply']['off_chain']}) flows freely, but here it dries up.\n\n"
-                f"Counsel: When the tide recedes, the rare stones are revealed. Watch closely."
+                f"Counsel: When the water vanishes, the rare stones are revealed. Watch closely."
             )
             
         else:
             return (
-                f"⚖️ HARMONY RESTORED: {name}\n\n"
+                f"🌊 HARMONY RESTORED: {name}\n\n"
                 f"The Physical ({p_ebay}) and the Digital ({p_rwa}) sing in unison.\n\n"
                 f"The currents are calm. True wisdom lies in patience."
             )
