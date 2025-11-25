@@ -2,55 +2,52 @@
   "snapshot_date": "2025-11-25",
   "cards": [
     {
-      "id": "PKM-001",
+      "id": "PKM-UMB",
+      "name": "Umbreon VMAX Alt Art (Evolving Skies) PSA 10",
+      "market_prices": {"eBay": 2150.00, "Beezie": 1950.00}, 
+      "supply": {"on_chain": 8, "off_chain": 850}
+    },
+    {
+      "id": "PKM-ZARD",
       "name": "Charizard Base Set (Unlimited) PSA 9",
-      "market_prices": {
-        "Beezie": 750.00,
-        "Collector Crypt": 780.00,
-        "eBay": 830.00,
-        "TCGPlayer": 850.00,
-        "Cardmarket": 810.00
-      },
-      "supply_info": {
-        "on_chain_count": 12,
-        "off_chain_count": 5506,
-        "notes": "eBay price based on recent PSA 9 sales (~$830). On-chain discount simulated."
-      },
-      "volume_trend_24h": -5.0
+      "market_prices": {"eBay": 1050.00, "Collector Crypt": 1180.00}, 
+      "supply": {"on_chain": 12, "off_chain": 420}
     },
     {
-      "id": "PKM-002",
-      "name": "Pikachu Illustrator (Fractional)",
-      "market_prices": {
-        "Beezie": 4800000.00,
-        "Collector Crypt": 4950000.00,
-        "eBay": 5275000.00,
-        "TCGPlayer": 5300000.00,
-        "Cardmarket": 5400000.00
-      },
-      "supply_info": {
-        "on_chain_count": 5,
-        "off_chain_count": 1,
-        "notes": "Off-chain price anchored to Guinness World Record (Logan Paul sale). Beezie price implies fractional discount."
-      },
-      "volume_trend_24h": 0.0
+      "id": "PKM-GIRA",
+      "name": "Giratina V Alt Art (Lost Origin) PSA 10",
+      "market_prices": {"eBay": 900.00, "Beezie": 895.00},
+      "supply": {"on_chain": 25, "off_chain": 1100}
     },
     {
-      "id": "PKM-003",
-      "name": "Umbreon VMAX Alt Art PSA 10",
-      "market_prices": {
-        "Beezie": 2850.00,
-        "Collector Crypt": 2900.00,
-        "eBay": 3130.00,
-        "TCGPlayer": 3150.00,
-        "Cardmarket": 3100.00
-      },
-      "supply_info": {
-        "on_chain_count": 35,
-        "off_chain_count": 19182,
-        "notes": "eBay average for PSA 10 is ~$3,130. On-chain offers arbitrage opportunity."
-      },
-      "volume_trend_24h": 12.0
+      "id": "PKM-GOGH",
+      "name": "Pikachu with Grey Felt Hat (Van Gogh) PSA 10",
+      "market_prices": {"eBay": 320.00, "Collector Crypt": 280.00},
+      "supply": {"on_chain": 50, "off_chain": 3500}
+    },
+    {
+      "id": "PKM-GENG",
+      "name": "Gengar VMAX Alt Art (Fusion Strike) PSA 10",
+      "market_prices": {"eBay": 650.00, "Beezie": 720.00},
+      "supply": {"on_chain": 15, "off_chain": 900}
+    },
+    {
+      "id": "PKM-LUG",
+      "name": "Lugia V Alt Art (Silver Tempest) PSA 10",
+      "market_prices": {"eBay": 480.00, "Collector Crypt": 430.00},
+      "supply": {"on_chain": 6, "off_chain": 1200}
+    },
+    {
+      "id": "PKM-SKULL",
+      "name": "Pretend Team Skull Pikachu (JP Promo) PSA 10",
+      "market_prices": {"eBay": 3100.00, "Collector Crypt": 7500.00},
+      "supply": {"on_chain": 2, "off_chain": 14}
+    },
+    {
+      "id": "PKM-MEW",
+      "name": "Mew ex Paldean Fates (#232) PSA 10",
+      "market_prices": {"eBay": 155.00, "Beezie": 150.00},
+      "supply": {"on_chain": 40, "off_chain": 600}
     }
   ]
 }
