@@ -9,10 +9,10 @@ from typing import Dict, List
 
 CONFIG = {
     "agent_name": "Wise Slowking",
-    "version": "5.0-Json-Scanner",
-    "data_source": "real_data.json", # Lê o arquivo externo
+    "version": "6.0-Oracle-Persona",
+    "data_source": "real_data.json", 
     "thresholds": {
-        "divergence": 5.0,     # 5% difference triggers alert
+        "divergence": 5.0,     # 5% difference triggers observation
         "scarcity": 5          # Critical supply count
     }
 }
@@ -26,8 +26,8 @@ class MarketScanner:
     Loads the full database from JSON and selects a random batch to simulate a live scan.
     """
     def scan(self) -> List[Dict]:
-        print(f"\n> CONNECTED TO REAL MARKET DATABASE (real_data.json)...")
-        print(f"> SYNCING WALLETS & MARKETPLACES...\n")
+        print(f"\n> GAZING INTO THE MARKET STREAMS (real_data.json)...")
+        print(f"> OBSERVING THE FLOW OF VALUE...\n")
         
         if not os.path.exists(CONFIG["data_source"]):
             print(f"❌ ERROR: File {CONFIG['data_source']} not found.")
@@ -37,8 +37,6 @@ class MarketScanner:
             data = json.load(f)
             all_cards = data['cards']
             
-        # Select 3 random cards to analyze in this "Tweet Batch"
-        # This creates dynamic variety every time you run the script.
         return random.sample(all_cards, 3)
 
 # ==========================================
@@ -48,26 +46,22 @@ class MarketScanner:
 class MarketAnalyzer:
     def analyze(self, card_data: Dict) -> Dict:
         prices = card_data['market_prices']
-        
-        # Identify which RWA platform is listed in the JSON for this card
         rwa_plat = "Beezie" if "Beezie" in prices else "Collector Crypt"
         
         on_chain_p = prices[rwa_plat]
         off_chain_p = prices['eBay']
         
         # Calculate Percentage Difference
-        # Formula: (Physical - RWA) / RWA
         diff_pct = ((off_chain_p - on_chain_p) / on_chain_p) * 100
         
         insight = "NEUTRAL"
         
-        # Logic: 
         if diff_pct > CONFIG["thresholds"]["divergence"]:
-            insight = "ON_CHAIN_DISCOUNT" # RWA is cheaper (Arbitrage)
+            insight = "ON_CHAIN_DISCOUNT" 
         elif diff_pct < -CONFIG["thresholds"]["divergence"]:
-            insight = "OFF_CHAIN_DISCOUNT" # eBay is cheaper (Premium Warning)
+            insight = "OFF_CHAIN_DISCOUNT" 
         elif card_data['supply']['on_chain'] < CONFIG["thresholds"]["scarcity"]:
-            insight = "SCARCITY_WARNING" # Low Supply
+            insight = "SCARCITY_WARNING" 
             
         return {
             "name": card_data['name'],
@@ -80,7 +74,7 @@ class MarketAnalyzer:
         }
 
 # ==========================================
-# 4. PERSONA ENGINE (Direct & Clean)
+# 4. PERSONA ENGINE (THE WISE ORACLE)
 # ==========================================
 
 class WiseSlowkingPersona:
@@ -91,39 +85,37 @@ class WiseSlowkingPersona:
         p_ebay = f"${analysis['off_chain_p']:,.2f}"
         pct = abs(analysis['diff_pct'])
         
+        # O Slowking fala sobre "Mundos" (Físico vs Digital) e "Equilíbrio".
+        
         if analysis['insight'] == "ON_CHAIN_DISCOUNT":
             return (
-                f"🚨 ARBITRAGE DETECTED: {name}\n\n"
-                f"Physical (eBay Sold): {p_ebay}\n"
-                f"On-Chain ({rwa}): {p_rwa}\n\n"
-                f"📉 {pct:.1f}% Spread. The tokenized asset is undervalued.\n"
-                f"Action: Bridge to RWA for immediate equity."
+                f"🚨 THE BALANCE IS DISTURBED: {name}\n\n"
+                f"The Physical Realm demands {p_ebay}, yet the Digital Vaults of {rwa} ask only {p_rwa}.\n\n"
+                f"📉 A divergence of {pct:.1f}% reveals a hidden truth.\n"
+                f"Counsel: Bridge the realms. Restore value where it lies dormant."
             )
         
         elif analysis['insight'] == "OFF_CHAIN_DISCOUNT":
             return (
-                f"⚠️ PREMIUM WARNING: {name}\n\n"
-                f"On-Chain ({rwa}): {p_rwa}\n"
-                f"Physical (eBay Sold): {p_ebay}\n\n"
-                f"RWA listing is trading {pct:.1f}% above real market value.\n"
-                f"Action: Do not overpay. Source physically."
+                f"⚠️ ILLUSION DETECTED: {name}\n\n"
+                f"The Digital price ({p_rwa}) has drifted far from the Physical truth ({p_ebay}).\n\n"
+                f"The waters here are treacherous ({pct:.1f}% premium).\n"
+                f"Counsel: Do not be swayed. Seek the artifact in the physical world."
             )
             
         elif analysis['insight'] == "SCARCITY_WARNING":
             return (
-                f"💎 SUPPLY SHOCK: {name}\n\n"
-                f"On-Chain Vaults: Only {analysis['supply']['on_chain']} left\n"
-                f"eBay Listings: {analysis['supply']['off_chain']}\n\n"
-                f"Prices are stable, but RWA supply is critical.\n"
-                f"Action: Monitor closely for liquidity crunch."
+                f"💎 A DROUGHT APPROACHES: {name}\n\n"
+                f"The On-Chain Vaults hold but {analysis['supply']['on_chain']} remnants.\n"
+                f"The physical supply ({analysis['supply']['off_chain']}) flows freely, but here it dries up.\n\n"
+                f"Counsel: When the tide recedes, the rare stones are revealed. Watch closely."
             )
             
         else:
             return (
-                f"⚖️ FAIR VALUE: {name}\n\n"
-                f"On-Chain ({rwa}): {p_rwa}\n"
-                f"Physical (eBay): {p_ebay}\n\n"
-                f"Market is efficient. Prices are aligned."
+                f"⚖️ HARMONY RESTORED: {name}\n\n"
+                f"The Physical ({p_ebay}) and the Digital ({p_rwa}) sing in unison.\n\n"
+                f"The currents are calm. True wisdom lies in patience."
             )
 
 # ==========================================
@@ -135,10 +127,8 @@ if __name__ == "__main__":
     analyzer = MarketAnalyzer()
     persona = WiseSlowkingPersona()
     
-    # 1. Get random sample from JSON File
     batch = scanner.scan()
     
-    # 2. Process
     if batch:
         for card in batch:
             result = analyzer.analyze(card)
@@ -147,4 +137,4 @@ if __name__ == "__main__":
             print(tweet)
             print("\n" + " "*20 + "* * *\n")
     else:
-        print("No cards found.")
+        print("The mists obscure my vision (No cards found).")
