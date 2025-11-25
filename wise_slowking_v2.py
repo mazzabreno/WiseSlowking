@@ -1,191 +1,150 @@
 import json
+import random
+import os
 from typing import Dict, List
 
 # ==========================================
-# 1. CONFIGURATION (REAL DATA MODE)
+# 1. CONFIGURATION
 # ==========================================
 
 CONFIG = {
     "agent_name": "Wise Slowking",
-    "version": "3.2-Twitter-Native",
+    "version": "5.0-Json-Scanner",
+    "data_source": "real_data.json", # Lê o arquivo externo
     "thresholds": {
-        "divergence": 8.0,     # 8% difference triggers alert
-        "scarcity": 10         # Low supply count
+        "divergence": 5.0,     # 5% difference triggers alert
+        "scarcity": 5          # Critical supply count
     }
 }
 
 # ==========================================
-# 2. REAL MARKET SNAPSHOT (EMBEDDED)
-# ==========================================
-# Snapshot taken: Nov 25, 2025. Sources: eBay, Beezie, PriceCharting.
-
-REAL_MARKET_SNAPSHOT = {
-  "snapshot_date": "2025-11-25",
-  "cards": [
-    {
-      "id": "PKM-001",
-      "name": "Charizard Base Set (Unlimited) PSA 9",
-      "market_prices": {
-        "Beezie": 750.00,
-        "Collector Crypt": 780.00,
-        "eBay": 830.00,
-        "TCGPlayer": 850.00,
-        "Cardmarket": 810.00
-      },
-      "supply_info": {
-        "on_chain_count": 12,
-        "off_chain_count": 5506
-      }
-    },
-    {
-      "id": "PKM-002",
-      "name": "Pikachu Illustrator (Fractional)",
-      "market_prices": {
-        "Beezie": 4800000.00,
-        "Collector Crypt": 4950000.00,
-        "eBay": 5275000.00,
-        "TCGPlayer": 5300000.00,
-        "Cardmarket": 5400000.00
-      },
-      "supply_info": {
-        "on_chain_count": 5,
-        "off_chain_count": 1
-      }
-    },
-    {
-      "id": "PKM-003",
-      "name": "Umbreon VMAX Alt Art PSA 10",
-      "market_prices": {
-        "Beezie": 2850.00,
-        "Collector Crypt": 2900.00,
-        "eBay": 3130.00,
-        "TCGPlayer": 3150.00,
-        "Cardmarket": 3100.00
-      },
-      "supply_info": {
-        "on_chain_count": 35,
-        "off_chain_count": 19182
-      }
-    }
-  ]
-}
-
-# ==========================================
-# 3. DATA INGESTION
+# 2. DATA LOADER & RANDOMIZER
 # ==========================================
 
-class RealDataFetcher:
-    def load_data(self) -> List[Dict]:
-        print(f"\n> CONNECTED TO MARKET DATA STREAM ({REAL_MARKET_SNAPSHOT['snapshot_date']})\n")
-        return REAL_MARKET_SNAPSHOT['cards']
+class MarketScanner:
+    """
+    Loads the full database from JSON and selects a random batch to simulate a live scan.
+    """
+    def scan(self) -> List[Dict]:
+        print(f"\n> CONNECTED TO REAL MARKET DATABASE (real_data.json)...")
+        print(f"> SYNCING WALLETS & MARKETPLACES...\n")
+        
+        if not os.path.exists(CONFIG["data_source"]):
+            print(f"❌ ERROR: File {CONFIG['data_source']} not found.")
+            return []
+
+        with open(CONFIG["data_source"], 'r') as f:
+            data = json.load(f)
+            all_cards = data['cards']
+            
+        # Select 3 random cards to analyze in this "Tweet Batch"
+        # This creates dynamic variety every time you run the script.
+        return random.sample(all_cards, 3)
 
 # ==========================================
-# 4. ANALYTICAL ENGINE
+# 3. ANALYTICAL ENGINE
 # ==========================================
 
 class MarketAnalyzer:
     def analyze(self, card_data: Dict) -> Dict:
         prices = card_data['market_prices']
         
-        # Calculate On-Chain Average
-        p_beezie = prices.get('Beezie', 0)
-        p_cc = prices.get('Collector Crypt', 0)
-        on_chain_avg = (p_beezie + p_cc) / 2
+        # Identify which RWA platform is listed in the JSON for this card
+        rwa_plat = "Beezie" if "Beezie" in prices else "Collector Crypt"
         
-        # Calculate Off-Chain Reference
-        off_chain_ref = prices.get('eBay', 0)
+        on_chain_p = prices[rwa_plat]
+        off_chain_p = prices['eBay']
         
-        # Calculate Divergence
-        if on_chain_avg > 0:
-            divergence_pct = ((off_chain_ref - on_chain_avg) / on_chain_avg) * 100
-        else:
-            divergence_pct = 0
+        # Calculate Percentage Difference
+        # Formula: (Physical - RWA) / RWA
+        diff_pct = ((off_chain_p - on_chain_p) / on_chain_p) * 100
         
-        insight_type = "NEUTRAL"
-        target_platform = "None"
+        insight = "NEUTRAL"
         
-        # Decision Logic (8% Threshold)
-        if divergence_pct > CONFIG["thresholds"]["divergence"]:
-            insight_type = "ON_CHAIN_DISCOUNT" 
-            target_platform = "Beezie"
-        elif divergence_pct < -CONFIG["thresholds"]["divergence"]:
-            insight_type = "OFF_CHAIN_DISCOUNT" 
-            target_platform = "eBay"
-        elif card_data['supply_info']['on_chain_count'] < CONFIG["thresholds"]["scarcity"]:
-            insight_type = "SCARCITY_ALERT"
+        # Logic: 
+        if diff_pct > CONFIG["thresholds"]["divergence"]:
+            insight = "ON_CHAIN_DISCOUNT" # RWA is cheaper (Arbitrage)
+        elif diff_pct < -CONFIG["thresholds"]["divergence"]:
+            insight = "OFF_CHAIN_DISCOUNT" # eBay is cheaper (Premium Warning)
+        elif card_data['supply']['on_chain'] < CONFIG["thresholds"]["scarcity"]:
+            insight = "SCARCITY_WARNING" # Low Supply
             
         return {
             "name": card_data['name'],
-            "insight": insight_type,
-            "on_chain_price": on_chain_avg,
-            "off_chain_price": off_chain_ref,
-            "divergence": divergence_pct,
-            "target": target_platform,
-            "supply": card_data['supply_info']
+            "insight": insight,
+            "on_chain_p": on_chain_p,
+            "off_chain_p": off_chain_p,
+            "diff_pct": diff_pct,
+            "rwa_plat": rwa_plat,
+            "supply": card_data['supply']
         }
 
 # ==========================================
-# 5. PERSONA ENGINE (TWEET OPTIMIZED)
+# 4. PERSONA ENGINE (Direct & Clean)
 # ==========================================
 
 class WiseSlowkingPersona:
     def speak(self, analysis: Dict) -> str:
         name = analysis['name']
-        on_p = f"${analysis['on_chain_price']:,.2f}"
-        off_p = f"${analysis['off_chain_price']:,.2f}"
-        diff = f"{abs(analysis['divergence']):.1f}%"
-        
-        # TWEET FORMAT: Clean, visual, data-first.
+        rwa = analysis['rwa_plat']
+        p_rwa = f"${analysis['on_chain_p']:,.2f}"
+        p_ebay = f"${analysis['off_chain_p']:,.2f}"
+        pct = abs(analysis['diff_pct'])
         
         if analysis['insight'] == "ON_CHAIN_DISCOUNT":
             return (
-                f"🚨 ARBITRAGE ALERT: {name}\n\n"
-                f"Physical (eBay): {off_p}\n"
-                f"On-Chain ({analysis['target']}): {on_p}\n\n"
-                f"📉 {diff} Discount detected On-Chain.\n"
-                f"The gap is visible. Tokenized assets currently undervalued."
+                f"🚨 ARBITRAGE DETECTED: {name}\n\n"
+                f"Physical (eBay Sold): {p_ebay}\n"
+                f"On-Chain ({rwa}): {p_rwa}\n\n"
+                f"📉 {pct:.1f}% Spread. The tokenized asset is undervalued.\n"
+                f"Action: Bridge to RWA for immediate equity."
             )
-            
+        
         elif analysis['insight'] == "OFF_CHAIN_DISCOUNT":
             return (
-                f"📉 ENTRY POINT: {name}\n\n"
-                f"Physical (eBay): {off_p}\n"
-                f"On-Chain RWA: {on_p}\n\n"
-                f"Physical market trading below tokenized value.\n"
-                f"Opportunity to bridge asset for immediate appreciation."
+                f"⚠️ PREMIUM WARNING: {name}\n\n"
+                f"On-Chain ({rwa}): {p_rwa}\n"
+                f"Physical (eBay Sold): {p_ebay}\n\n"
+                f"RWA listing is trading {pct:.1f}% above real market value.\n"
+                f"Action: Do not overpay. Source physically."
             )
-
-        elif analysis['insight'] == "SCARCITY_ALERT":
+            
+        elif analysis['insight'] == "SCARCITY_WARNING":
             return (
                 f"💎 SUPPLY SHOCK: {name}\n\n"
-                f"On-Chain Supply: Only {analysis['supply']['on_chain_count']} left\n"
-                f"Off-Chain Supply: {analysis['supply']['off_chain_count']}\n\n"
-                f"Vaults are emptying. Digital scarcity premium not yet priced in."
+                f"On-Chain Vaults: Only {analysis['supply']['on_chain']} left\n"
+                f"eBay Listings: {analysis['supply']['off_chain']}\n\n"
+                f"Prices are stable, but RWA supply is critical.\n"
+                f"Action: Monitor closely for liquidity crunch."
             )
             
         else:
             return (
-                f"⚖️ MARKET STABILITY: {name}\n\n"
-                f"On-Chain: {on_p}\n"
-                f"Off-Chain: {off_p}\n\n"
-                f"Prices are balanced across realms. No action required."
+                f"⚖️ FAIR VALUE: {name}\n\n"
+                f"On-Chain ({rwa}): {p_rwa}\n"
+                f"Physical (eBay): {p_ebay}\n\n"
+                f"Market is efficient. Prices are aligned."
             )
 
 # ==========================================
-# 6. MAIN EXECUTION (CLEAN OUTPUT)
+# 5. EXECUTION
 # ==========================================
 
 if __name__ == "__main__":
-    fetcher = RealDataFetcher()
+    scanner = MarketScanner()
     analyzer = MarketAnalyzer()
     persona = WiseSlowkingPersona()
     
-    cards = fetcher.load_data()
+    # 1. Get random sample from JSON File
+    batch = scanner.scan()
     
-    for card in cards:
-        analysis = analyzer.analyze(card)
-        post = persona.speak(analysis)
-        
-        # Simulating a clean Twitter Feed in the terminal
-        print(post)
-        print("\n" + " "*20 + "* * *\n")
+    # 2. Process
+    if batch:
+        for card in batch:
+            result = analyzer.analyze(card)
+            tweet = persona.speak(result)
+            
+            print(tweet)
+            print("\n" + " "*20 + "* * *\n")
+    else:
+        print("No cards found.")
