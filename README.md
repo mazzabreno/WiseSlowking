@@ -64,3 +64,40 @@ Translates raw financial metrics into the enigmatic voice of Slowking, ensuring 
 ---
 
 ## 🏆 Hackathon Tracks Alignment
+
+| Track | How Wise Slowking Fits |
+| :--- | :--- |
+| **Pokémon-Inspired** | Totally immersed in the lore. The agent *is* the character Slowking (Movie 2000 version), offering wisdom, not just stats. |
+| **AI Agents** | Fully autonomous loop. Requires no human prompt to run, analyze, and publish insights. |
+| **RWA (Real World Assets)** | Built specifically to analyze the relationship between Tokenized Collectibles (Beezie/Collector Crypt) and physical cards. |
+| **Build on Base** | Designed to launch via **CreatorBid** on the Base network, driving traffic and intelligence to Base-native RWA protocols. |
+
+---
+
+## 🚀 Quick Start
+
+To watch the Oracle scan the markets in real-time:
+
+1.  **Clone the repository:**
+    ```bash
+    git clone [https://github.com/mazzabreno/WiseSlowking.git](https://github.com/mazzabreno/WiseSlowking.git)
+    ```
+
+2.  **Run the Agent:**
+    ```bash
+    python wise_slowking_v3.py
+    ```
+
+*The terminal will initialize the connection visualization and begin the autonomous monitoring loop.*
+
+---
+
+## 🗺️ Roadmap
+
+* **Phase 1 (Hackathon):** Core logic, divergence detection, scarcity analysis, autonomous feed.
+* **Phase 2 (Live Integration):** Direct API hooks into Beezie SDK and eBay Developer API for real-time streaming.
+* **Phase 3 (Launch):** Deploy via **CreatorBid** on Base. Token holders gain access to "The Inner Circle" (faster alerts).
+
+---
+
+*Built with 💙 by a Pokémon Trainer, for Pokémon Trainers.*
