@@ -1,37 +1,103 @@
+<div align="center">
+
+<img src="WiseSlowking.jpg" alt="Wise Slowking Oracle" width="600" style="border-radius: 10px">
+
 # 🐚 Wise Slowking: The Autonomous RWA Oracle
 
 > *"Disturb not the harmony of fire, ice, or lightning... lest these three Titans wreck destruction upon the world in which you clash."* — Slowking, Pokémon The Movie 2000.
 
-**Wise Slowking** is an autonomous AI Agent built on **Base** that bridges the gap between the physical world and the blockchain. He acts as a market philosopher, analyzing data patterns between Real World Assets (RWAs) and traditional marketplaces to provide actionable, data-driven wisdom.
+**Wise Slowking** is an autonomous AI Agent built on **Base** that acts as a bridge between the Physical World (eBay) and the Digital Vaults (RWA). He acts as a market philosopher, observing the flow of value to provide actionable, data-driven wisdom for collectors and investors.
+
+</div>
+
+---
+
+## 🐚 The Oracle's Wisdom (How to read the signs)
+
+**Wise Slowking is a guardian of balance, not a financial advisor.** He constantly observes the flow between the **Physical Realm** and the **Digital Vaults**. He offers counsel based on hard data, but the final decision always rests with the Trainer.
+
+His reactions decode the market's hidden currents:
+
+* 🐚 **"The Balance is Disturbed" (Shell):** A call to action. The Oracle sees that the Digital RWA is undervalued compared to the Physical world. A path to bridge the realms (and capture value) is revealed.
+* 💭 **"Illusion Detected" (Thought Bubble):** A warning. The Digital price has drifted too high above the Physical reality. Slowking advises caution: do not be swayed by the reflection; the waters are treacherous.
+* 🌊 **"Harmony Restored" (Wave):** A state of peace. The Physical and Digital markets sing in unison. Prices are aligned. True wisdom lies in patience.
+* 🔮 **"The Tide Recedes" (Crystal Ball):** A vision of scarcity. Prices may be stable, but the supply in the on-chain vaults is critically low. A drought approaches.
 
 ---
 
 ## 💡 The Problem: Market Fragmentation
-The Pokémon TCG market is split into two realms:
-1.  **Off-Chain (Physical):** eBay, TCGPlayer, Cardmarket (High liquidity, slow settlement).
-2.  **On-Chain (RWA):** Beezie, Collector Crypt (Instant settlement, growing liquidity).
 
-These two worlds often drift apart. Prices diverge. Volatility spikes unnoticed. Collectors and investors miss arbitrage opportunities because they can't watch every card, every second.
+The Pokémon TCG market is split into two disconnected realms:
+1.  **Off-Chain (Physical):** eBay, TCGPlayer, Cardmarket (High liquidity, slow settlement, logistics heavy).
+2.  **On-Chain (RWA):** Beezie, Collector Crypt (Instant settlement, growing liquidity, secure storage).
 
-## 🔮 The Solution: Wise Slowking
-Wise Slowking is a **Market Intelligence Agent** that lives autonomously. He doesn't just "scrape prices"; he interprets market health.
+These two worlds often drift apart. Prices diverge. Volatility spikes unnoticed. Collectors miss arbitrage opportunities because they cannot watch every card, every second.
 
-* **24/7 Monitoring:** Constantly compares On-Chain (Beezie) vs. Off-Chain (eBay) data.
-* **Arbitrage Detection:** Identifies when a card is significantly cheaper in one realm than the other.
-* **Persona-Driven Insights:** Delivers complex financial metrics (Volatility, Liquidity depth) through the voice of a wise, enigmatic mentor.
+## 🔮 The Solution
+
+Wise Slowking is an **Autonomous Market Intelligence Agent** that lives on the Base network. He doesn't just "scrape prices"; he interprets market health through a Pokémon-native persona.
+
+* **24/7 Autonomy:** Runs continuously, scanning asset pairs without human intervention.
+* **Arbitrage Detection:** Mathematically identifies when an asset is cheaper On-Chain vs Off-Chain.
+* **Protection:** Warns users when RWA assets are overpriced compared to real-world comps.
 
 ---
 
-## 🧠 How It Works (Technical Architecture)
+## 🧠 Technical Architecture
 
 The agent utilizes a modular Python architecture designed for scalability on the Base ecosystem.
 
-### 1. Data Ingestion Layer (`MarketDataFetcher`)
-Simulates the aggregation of time-series data (7-day history) to establish trend baselines.
-* *Inputs:* Tokenized floor prices, Physical listing averages, Volume flow.
+### 1. Data Ingestion (Real Market Snapshots)
+The agent operates on a curated database of **Real Market Data** (`real_data.json`).
+* **Sources:** Verified eBay Sold Listings vs. Live RWA floor prices (Beezie/Collector Crypt).
+* **Hard Data:** The agent does not hallucinate prices; it references a validated snapshot to ensure demo accuracy.
 
-### 2. The Analytical Brain (`MarketAnalyzer`)
-We moved beyond simple price comparison. The agent calculates:
-* **Divergence Score:** `(OffChain - OnChain) / OnChain`.
-* **Volatility Index:** Standard deviation analysis to warn users of "turbulent waters."
-* **
+### 2. The Analytical Brain
+The core logic engine processes raw data into insights:
+* **Divergence Calculation:** `((OffChain - OnChain) / OnChain) * 100`.
+* **Scarcity Logic:** Monitors the exact count of tokenized assets available in the vaults.
+* **Decision Tree:** Prioritizes Arbitrage opportunities > Scarcity Alerts > Market Stability.
+
+### 3. The Persona Engine
+Translates raw financial metrics into the enigmatic voice of Slowking, ensuring the output is engaging for fans while remaining useful for traders.
+
+---
+
+## 🏆 Hackathon Tracks Alignment
+
+| Track | How Wise Slowking Fits |
+| :--- | :--- |
+| **Pokémon-Inspired** | Totally immersed in the lore. The agent *is* the character Slowking (Movie 2000 version), offering wisdom, not just stats. |
+| **AI Agents** | Fully autonomous loop. Requires no human prompt to run, analyze, and publish insights. |
+| **RWA (Real World Assets)** | Built specifically to analyze the relationship between Tokenized Collectibles (Beezie/Collector Crypt) and physical cards. |
+| **Build on Base** | Designed to launch via **CreatorBid** on the Base network, driving traffic and intelligence to Base-native RWA protocols. |
+
+---
+
+## 🚀 Quick Start
+
+To watch the Oracle scan the markets in real-time:
+
+1.  **Clone the repository:**
+    ```bash
+    git clone [https://github.com/mazzabreno/WiseSlowking.git](https://github.com/mazzabreno/WiseSlowking.git)
+    ```
+
+2.  **Run the Agent:**
+    ```bash
+    python wise_slowking_v3.py
+    ```
+
+*The terminal will initialize the connection visualization and begin the autonomous monitoring loop.*
+
+---
+
+## 🗺️ Roadmap
+
+* **Phase 1 (Hackathon):** Core logic, divergence detection, scarcity analysis, autonomous feed.
+* **Phase 2 (Live Integration):** Direct API hooks into Beezie SDK and eBay Developer API for real-time streaming.
+* **Phase 3 (Launch):** Deploy via **CreatorBid** on Base. Token holders gain access to "The Inner Circle" (faster alerts).
+
+---
+
+*Built with 💙 by a Pokémon Trainer, for Pokémon Trainers.*
